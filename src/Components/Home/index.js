@@ -18,6 +18,7 @@ function Home (params) {
         id: user._id,
         firstName: user.name.first,
         lastName: user.name.last,
+        name: `${user.name.first} ${user.name.last}`,
         image: 'https://picsum.photos/50',
     },
       userToken
