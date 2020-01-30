@@ -18,7 +18,7 @@ const Login = (props) => {
     setErrorMessage("")
     await setLoading(true);
 
-    await axios.post(process.env.REACT_APP_ENDPOINT, {
+    await axios.post("https://react-api-stream.herokuapp.com/v1/auth/init", {
       headers: {
         'Content-Type': 'application/json'
       },
