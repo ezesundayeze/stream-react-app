@@ -22,16 +22,17 @@ const Login = (props) => {
       headers: {
         'Content-Type': 'application/json'
       },
-
       name: {first:firstName, last:lastName},
       password: password,
       email: email
 
     }).then((response)=>{
+
       localStorage.setItem("user", JSON.stringify(response.data.user));
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("apiKey", response.data.apiKey);    
       props.history.push("/");
+
     }).catch((err)=>{
       setLoading(false);
       setErrorMessage("Your registration wasn't successful, please, try again.")

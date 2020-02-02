@@ -24,10 +24,10 @@ function Home (params) {
       userToken
     )
 
-  const channel = client.channel('messaging', 'godevs', {
+  const channel = client.channel('messaging', 'general', {
       // add as many custom fields as you'd like
       image: 'https://cdn.chrisshort.net/testing-certificate-chains-in-go/GOPHER_MIC_DROP.png',
-      name: "Talk About Axios",
+      name: "Talk About Anything",
     });
 
 
