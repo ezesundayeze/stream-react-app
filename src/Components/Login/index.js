@@ -7,53 +7,44 @@ import './index.css'
 const Login = (props) => {
 
   const [loading, setLoading] = useState(false)
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [password, setPassword] = useState("")
-  const [email, setEmail] = useState("")
+  const [userId, setUserId] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
 
   const initStream = async (e) =>{
     e.preventDefault()
     setErrorMessage("")
-    await setLoading(true);
+    setLoading(true);
 
-    await axios.post(process.env.REACT_APP_ENDPOINT, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      name: {first:firstName, last:lastName},
-      password: password,
-      email: email
+    if (userId.trim() !== "") {
 
-    }).then((response)=>{
+      await axios.post("http://127.0.0.1:5000/generate-token", {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        user_id: userId
 
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("apiKey", response.data.apiKey);    
-      props.history.push("/");
+      }).then((response)=>{
 
-    }).catch((err)=>{
-      setLoading(false);
-      setErrorMessage("Your registration wasn't successful, please, try again.")
-      console.log("error", err)
-    })
-    await setLoading(false);
+        localStorage.setItem("user_id", userId);
+        localStorage.setItem("token", response.data.token);
+        if (response.data.token) {
+          props.history.push("/");
+        }
+        
+
+      }).catch((err)=>{
+        setLoading(false);
+        setErrorMessage("Your registration wasn't successful, please, try again.")
+        console.log("error", err)
+      })
+    }
+      await setLoading(false);
   }
 
-  const handleEmail = e => {
-    setEmail(e.target.value);
-  };
+  const handleUserId = e => {
+    setUserId(e.target.value);
+    console.log(e.target.value)
 
-  const handleFirstName = e => {
-    setFirstName(e.target.value);
-  };
-  const handleLastName = e => {
-    setLastName(e.target.value);
-  };
-
-  const handlePassword = e => {
-    setPassword(e.target.value);
   };
 
 
@@ -64,11 +55,7 @@ const Login = (props) => {
             Sign Up
         </h1>
         <div className='form-content'>
-          <input id='first-name' name='first-name' placeholder='First Name' type='text' onChange={e => handleFirstName(e)} />
-          <input id='last-name' name='last-name' placeholder='Last Name' type='text' onChange={e => handleLastName(e)} />
-          <input id='email' name='email' placeholder='Email' type='text' onChange={e => handleEmail(e)} />
-          <input id='password' name='password' placeholder='Password' type='password' onChange={e => handlePassword(e)}  />
-
+          <input id='user_id' name='user_id' placeholder='Username' type='text' onChange={e => handleUserId(e)} />
           <br />
           <button className='button' onClick={initStream} type='submit'>
             Submit
